@@ -7,7 +7,7 @@
 
 declare module "asteria-hyperion" {
 
-import { AbstractAsteriaObject, StreamProcessConfig, AsteriaStream, AsteriaSession, AsteriaError } from "asteria-gaia";
+import { AbstractAsteriaObject, StreamProcessConfig, AsteriaStream, AsteriaSession, AsteriaError, AsteriaContext } from "asteria-gaia";
 import { CsvToListConfig, FilterConfig, LinesToListConfig, ListToCsvConfig, FileReaderConfig } from "asteria-cronos";
     
 /*PLACEHOLDER*/}
