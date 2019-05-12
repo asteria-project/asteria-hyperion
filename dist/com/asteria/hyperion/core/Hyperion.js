@@ -23,20 +23,29 @@ class Hyperion extends asteria_gaia_1.AbstractAsteriaObject {
         return this.PROCESSOR.run();
     }
     initProcessor(config) {
-        config.processes.forEach((processCfg) => {
-            const type = processCfg.type;
-            const validator = this.VALIDATOR_MANAGER.getValidator(type);
-            validator.validate(processCfg, (err) => {
-                if (err) {
-                    this.SESSION.getContext().getLogger().fatal(err.toString());
-                }
-                else {
-                    const funcRef = HyperionBaseProcessDef_1.HyperionBaseProcessDef.getProcessRef(type);
-                    const processFun = this.PROCESSOR[funcRef];
-                    processFun.call(this.PROCESSOR, processCfg.config);
-                }
+        const processes = config.processes;
+        const logger = this.SESSION.getContext().getLogger();
+        if (processes && processes.length > 0) {
+            config.processes.forEach((processCfg) => {
+                const type = processCfg.type;
+                const validator = this.VALIDATOR_MANAGER.getValidator(type);
+                validator.validate(processCfg, (err) => {
+                    if (err) {
+                        logger.fatal(err.toString());
+                        throw asteria_gaia_1.ErrorUtil.errorToException(err);
+                    }
+                    else {
+                        const funcRef = HyperionBaseProcessDef_1.HyperionBaseProcessDef.getProcessRef(type);
+                        const processFun = this.PROCESSOR[funcRef];
+                        processFun.call(this.PROCESSOR, processCfg.config);
+                    }
+                });
             });
-        });
+        }
+        else {
+            const error = asteria_ouranos_1.OuranosErrorBuilder.getInstance().build(asteria_gaia_1.AsteriaErrorCode.MISSING_PARAMETER, this.getClassName(), 'no process are specified');
+            logger.warn(error.toString());
+        }
     }
 }
 exports.Hyperion = Hyperion;

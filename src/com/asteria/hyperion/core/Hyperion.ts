@@ -1,5 +1,5 @@
-import { AsteriaError, AbstractAsteriaObject, AsteriaStream } from 'asteria-gaia';
-import { Ouranos, OuranosSession, OuranosContext } from 'asteria-ouranos';
+import { AsteriaError, AbstractAsteriaObject, AsteriaStream, AsteriaErrorCode, AsteriaLogger, ErrorUtil } from 'asteria-gaia';
+import { Ouranos, OuranosSession, OuranosContext, OuranosErrorBuilder } from 'asteria-ouranos';
 import { HyperionProcessor } from '../processor/HyperionProcessor';
 import { HyperionConfig } from '../config/HyperionConfig';
 import { HyperionProcessConfig } from '../config/HyperionProcessConfig';
@@ -65,18 +65,30 @@ export class Hyperion extends AbstractAsteriaObject {
      * Parse the specified Hyperion config and initialize the processor.
      */
     private initProcessor(config: HyperionConfig): void {
-        config.processes.forEach((processCfg: HyperionProcessConfig)=> {
-            const type: string = processCfg.type;
-            const validator: HyperionValidator = this.VALIDATOR_MANAGER.getValidator(type);
-            validator.validate(processCfg, (err: AsteriaError)=> {
-                if (err) {
-                    (this.SESSION.getContext() as OuranosContext).getLogger().fatal(err.toString());
-                } else {
-                    const funcRef: string = HyperionBaseProcessDef.getProcessRef(type);
-                    const processFun: Function = (this.PROCESSOR as any)[funcRef];
-                    processFun.call(this.PROCESSOR, processCfg.config);
-                }
+        const processes: Array<HyperionProcessConfig> = config.processes;
+        const logger: AsteriaLogger = (this.SESSION.getContext() as OuranosContext).getLogger();
+        if (processes && processes.length > 0) {
+            config.processes.forEach((processCfg: HyperionProcessConfig)=> {
+                const type: string = processCfg.type;
+                const validator: HyperionValidator = this.VALIDATOR_MANAGER.getValidator(type);
+                validator.validate(processCfg, (err: AsteriaError)=> {
+                    if (err) {
+                        logger.fatal(err.toString());
+                        throw ErrorUtil.errorToException(err);
+                    } else {
+                        const funcRef: string = HyperionBaseProcessDef.getProcessRef(type);
+                        const processFun: Function = (this.PROCESSOR as any)[funcRef];
+                        processFun.call(this.PROCESSOR, processCfg.config);
+                    }
+                });
             });
-        });
+        } else {
+            const error: AsteriaError = OuranosErrorBuilder.getInstance().build(
+                AsteriaErrorCode.MISSING_PARAMETER,
+                this.getClassName(),
+                'no process are specified'
+            );
+            logger.warn(error.toString());
+        }
     }
 }
