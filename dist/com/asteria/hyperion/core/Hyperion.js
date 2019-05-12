@@ -22,6 +22,11 @@ class Hyperion extends asteria_gaia_1.AbstractAsteriaObject {
     run() {
         return this.PROCESSOR.run();
     }
+    stop() {
+    }
+    getContext() {
+        return this.SESSION.getContext();
+    }
     initProcessor(config) {
         const processes = config.processes;
         const logger = this.SESSION.getContext().getLogger();

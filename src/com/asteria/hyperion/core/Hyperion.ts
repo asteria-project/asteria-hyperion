@@ -1,4 +1,4 @@
-import { AsteriaError, AbstractAsteriaObject, AsteriaStream, AsteriaErrorCode, AsteriaLogger, ErrorUtil } from 'asteria-gaia';
+import { AsteriaError, AbstractAsteriaObject, AsteriaStream, AsteriaErrorCode, AsteriaLogger, ErrorUtil, AsteriaContext } from 'asteria-gaia';
 import { Ouranos, OuranosSession, OuranosContext, OuranosErrorBuilder } from 'asteria-ouranos';
 import { HyperionProcessor } from '../processor/HyperionProcessor';
 import { HyperionConfig } from '../config/HyperionConfig';
@@ -47,18 +47,34 @@ export class Hyperion extends AbstractAsteriaObject {
      * @param {HyperionConfig} config the description of all Asteria processes managed by this <code>Hyperion</code>
      *                                instance.
      * 
-     * @return {Hyperion} a new <code>Hyperion</code> instance.
+     * @returns {Hyperion} a new <code>Hyperion</code> instance.
      */
     public static build(config: HyperionConfig): Hyperion {
         return new Hyperion(config);
     }
 
     /**
-     * Run all stream processes registered in this<code>Hyperion</code> instance and return the the reference to the 
+     * Run all stream processes registered in this <code>Hyperion</code> instance and return the the reference to the 
      * last registered stream.
      */
     public run(): AsteriaStream {
         return this.PROCESSOR.run();
+    }
+
+    /**
+     * Stop all stream processes registered in this <code>Hyperion</code> instance.
+     */
+    public stop(): void {
+        // TODO: not implemented yet.
+    }
+
+    /**
+     * Return the context for this <code>Hyperion</code> instance.
+     * 
+     * @returns {AsteriaContext} this <code>Hyperion</code> instance.
+     */
+    public getContext(): AsteriaContext {
+        return this.SESSION.getContext();
     }
     
     /**
