@@ -5,10 +5,14 @@
  * Please maintain package and alphabetical order!
  */
 
-//--> com/asteria/hyperion/config/adapter
+//--> com/asteria/hyperion/config
 export { HyperionConfig } from './hyperion/config/HyperionConfig';
 export { HyperionConfigAdapter } from './hyperion/config/HyperionConfigAdapter';
 export { HyperionProcessConfig } from './hyperion/config/HyperionProcessConfig';
+
+//--> com/asteria/hyperion/core/module/impl
+export { HyperionModuleRegistryFactory } from './hyperion/core/module/impl/HyperionModuleRegistryFactory';
+export { HyperionModuleRegistryImpl } from './hyperion/core/module/impl/HyperionModuleRegistryImpl';
 
 //--> com/asteria/hyperion/core/module
 export { AbstractHyperionModule } from './hyperion/core/module/AbstractHyperionModule';

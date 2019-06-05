@@ -17,7 +17,7 @@ export interface HyperionModule {
     /**
      * Return the module process validator.
      * 
-     * @return {HyperionValidator} the module process validator.
+     * @returns {HyperionValidator} the module process validator.
      */
     getValidator(): HyperionValidator;
 

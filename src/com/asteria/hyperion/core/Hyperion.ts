@@ -1,17 +1,12 @@
-import { AsteriaError, AbstractAsteriaObject, AsteriaStream, AsteriaErrorCode, AsteriaLogger, ErrorUtil, AsteriaContext, StreamProcess } from 'asteria-gaia';
+import { AsteriaError, AbstractAsteriaObject, AsteriaStream, AsteriaErrorCode, AsteriaLogger, ErrorUtil, AsteriaContext, StreamProcess, AsteriaException, AbstractAsteriaRegistry } from 'asteria-gaia';
 import { Ouranos, OuranosSession, OuranosContext, OuranosErrorBuilder } from 'asteria-ouranos';
 import { HyperionProcessor } from '../core/processor/HyperionProcessor';
 import { HyperionConfig } from '../config/HyperionConfig';
 import { HyperionProcessConfig } from '../config/HyperionProcessConfig';
 import { HyperionModuleRegistry } from './module/HyperionModuleRegistry';
 import { HyperionModule } from './module/HyperionModule';
-import { ReadFileModule } from '../module/file/readfile/ReadFileModule';
-import { WriteFileModule } from '../module/file/writefile/WriteFileModule';
 import { HyperionValidator } from '../validator/HyperionValidator';
-import { FilterModule } from '../module/data/filter/FilterModule';
-import { CsvToListModule } from '../module/data/csvtolist/CsvToListModule';
-import { ListToCsvModule } from '../module/data/listtocsv/ListToCsvModule';
-import { LinesToListModule } from '../module/data/linestolist/LinesToListModule';
+import { HyperionModuleRegistryFactory } from './module/impl/HyperionModuleRegistryFactory';
 
 /**
  * The <code>Hyperion</code> class is the entry point of the Hyperion framework. It provides all functionalities needed
@@ -37,7 +32,7 @@ export class Hyperion extends AbstractAsteriaObject {
     /**
      * The module registry associated with this <code>Hyperion</code> instance.
      */
-    private readonly REGISTRY: HyperionModuleRegistry = null;
+    private moduleRegistry: HyperionModuleRegistry = null;
 
     /**
      * Create a new <code>Hyperion</code> instance.
@@ -45,11 +40,10 @@ export class Hyperion extends AbstractAsteriaObject {
      * @param {HyperionConfig} config the config of the session associated with the new <code>Hyperion</code> instance.
      */
     private constructor(config: HyperionConfig) {
-        super('com.asteria.hyperion.lang::Hyperion');
+        super('com.asteria.hyperion.core::Hyperion');
         this.CONFIG = config;
         this.SESSION = Ouranos.createSession({ name: config.name }) as OuranosSession;
         this.PROCESSOR = new HyperionProcessor(this.SESSION);
-        this.REGISTRY = this.initModuleRegistry();
     }
 
     /**
@@ -60,13 +54,43 @@ export class Hyperion extends AbstractAsteriaObject {
      * 
      * @returns {Hyperion} a new <code>Hyperion</code> instance.
      */
-    public static build(config: HyperionConfig): Hyperion {
-        return new Hyperion(config);
+    public static build(config: HyperionConfig, moduleRegistry: HyperionModuleRegistry = null): Hyperion {
+        const processor: Hyperion = new Hyperion(config);
+        processor.setModuleRegistry(moduleRegistry);
+        return processor;
+    }
+
+    /**
+     * Return the <code>HyperionModuleRegistry</code> object for this processor.
+     * 
+     * @returns {HyperionModuleRegistry} the <code>HyperionModuleRegistry</code> object for this processor.
+     */
+    public getModuleRegistry(): HyperionModuleRegistry {
+        return this.moduleRegistry;
+    }
+
+    /**
+     * Set the <code>HyperionModuleRegistry</code> object for this processor.
+     * 
+     * @param {HyperionModuleRegistry} moduleRegistry the new <code>HyperionModuleRegistry</code> object for this
+     *                                                processor.
+     */
+    public setModuleRegistry(moduleRegistry: HyperionModuleRegistry = null): void {
+        const logger: AsteriaLogger = (this.SESSION.getContext() as OuranosContext).getLogger();
+        if (moduleRegistry) {
+            this.moduleRegistry = moduleRegistry;
+            logger.info(`new module registry added: ${moduleRegistry.getClassName()}`);
+        } else {
+            this.initModuleRegistry();
+            logger.info('default module registry initialized');
+        } 
     }
 
     /**
      * Run all stream processes registered in this <code>Hyperion</code> instance and return the the reference to the 
      * last registered stream.
+     * 
+     * @returns {AsteriaStream} the reference to the <code>AsteriaStream</code> objects created by this processor.
      */
     public run(): AsteriaStream {
         this.initProcessor(this.CONFIG);
@@ -83,35 +107,10 @@ export class Hyperion extends AbstractAsteriaObject {
     /**
      * Return the context for this <code>Hyperion</code> instance.
      * 
-     * @returns {AsteriaContext} this <code>Hyperion</code> instance.
+     * @returns {AsteriaContext} the context for this <code>Hyperion</code> instance.
      */
     public getContext(): AsteriaContext {
         return this.SESSION.getContext();
-    }
-
-    /**
-     * Add the specified module to this <code>Hyperion</code> instance.
-     * 
-     * @param {HyperionModule} hyperionModule the module to add to this <code>Hyperion</code> instance.
-     */
-    public registerModule(hyperionModule: HyperionModule): void {
-        this.REGISTRY.add(hyperionModule);
-        (this.SESSION.getContext() as OuranosContext).getLogger().debug(
-            `new hyperion module registered: id=${hyperionModule.getId()}`
-        );
-    }
-
-    /**
-     * Return a boolean that indicates whether the module with the specified identifier is registred 
-     * (<code>true</code>), or not (<code>false</code>).
-     * 
-     * @param {string} id the identifier of the module to find.
-     * 
-     * @return {boolean} <code>true</code> whether the module with the specified identifier is registred;
-     *                   <code>false</code> otherwise.
-     */
-    public hasModule(id: string): boolean {
-        return this.REGISTRY.has(id);
     }
 
     /**
@@ -123,8 +122,8 @@ export class Hyperion extends AbstractAsteriaObject {
         if (processes && processes.length > 0) {
             config.processes.forEach((processCfg: HyperionProcessConfig)=> {
                 const type: string = processCfg.type;
-                if (this.hasModule(type)) {
-                    const module: HyperionModule = this.REGISTRY.get(type);
+                if (this.moduleRegistry.has(type)) {
+                    const module: HyperionModule = this.moduleRegistry.get(type);
                     const validator: HyperionValidator = module.getValidator();
                     validator.validate(processCfg, (err: AsteriaError)=> {
                         if (err) {
@@ -149,7 +148,7 @@ export class Hyperion extends AbstractAsteriaObject {
             const error: AsteriaError = OuranosErrorBuilder.getInstance().build(
                 AsteriaErrorCode.MISSING_PARAMETER,
                 this.getClassName(),
-                'no process are specified'
+                'no processes are specified'
             );
             logger.warn(error.toString());
         }
@@ -157,19 +156,9 @@ export class Hyperion extends AbstractAsteriaObject {
 
     /**
      * Initialize the module registry with default modules.
-     * 
-     * @returns {HyperionModuleRegistry} the reference to the module registry.
      */
-    private initModuleRegistry(): HyperionModuleRegistry {
-        const registry: HyperionModuleRegistry = new HyperionModuleRegistry();
-        // data processes
-        registry.add(new CsvToListModule());
-        registry.add(new FilterModule());
-        registry.add(new LinesToListModule());
-        registry.add(new ListToCsvModule());
-        // file processes
-        registry.add(new ReadFileModule());
-        registry.add(new WriteFileModule());
-        return registry;
+    private initModuleRegistry(): void {
+        const factory: HyperionModuleRegistryFactory = new HyperionModuleRegistryFactory();
+        this.moduleRegistry = factory.create();
     }
 }

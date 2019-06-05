@@ -1,9 +1,11 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
+var HyperionModuleRegistryFactory_1 = require("./hyperion/core/module/impl/HyperionModuleRegistryFactory");
+exports.HyperionModuleRegistryFactory = HyperionModuleRegistryFactory_1.HyperionModuleRegistryFactory;
+var HyperionModuleRegistryImpl_1 = require("./hyperion/core/module/impl/HyperionModuleRegistryImpl");
+exports.HyperionModuleRegistryImpl = HyperionModuleRegistryImpl_1.HyperionModuleRegistryImpl;
 var AbstractHyperionModule_1 = require("./hyperion/core/module/AbstractHyperionModule");
 exports.AbstractHyperionModule = AbstractHyperionModule_1.AbstractHyperionModule;
-var HyperionModuleRegistry_1 = require("./hyperion/core/module/HyperionModuleRegistry");
-exports.HyperionModuleRegistry = HyperionModuleRegistry_1.HyperionModuleRegistry;
 var HyperionProcessor_1 = require("./hyperion/core/processor/HyperionProcessor");
 exports.HyperionProcessor = HyperionProcessor_1.HyperionProcessor;
 var Hyperion_1 = require("./hyperion/core/Hyperion");
