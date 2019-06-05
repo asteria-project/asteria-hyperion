@@ -7,7 +7,7 @@ class FilterValidator extends AbstractHyperionValidator_1.AbstractHyperionValida
     constructor() {
         super('com.asteria.hyperion.module.data.filter::FilterValidator');
     }
-    validate(config, result) {
+    validate(config) {
         let error = null;
         const param = config.config;
         if (param === null || param === undefined) {
@@ -16,7 +16,7 @@ class FilterValidator extends AbstractHyperionValidator_1.AbstractHyperionValida
         else if (typeof param !== asteria_gaia_1.PrimitiveType.STRING) {
             error = asteria_ouranos_1.OuranosErrorBuilder.getInstance().build(asteria_gaia_1.AsteriaErrorCode.INVALID_PARAMETER, this.getClassName(), '\'config\' paramater must be of the type of \'string\'');
         }
-        result(error);
+        return error;
     }
 }
 exports.FilterValidator = FilterValidator;

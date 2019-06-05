@@ -125,15 +125,14 @@ export class Hyperion extends AbstractAsteriaObject {
                 if (this.moduleRegistry.has(type)) {
                     const module: HyperionModule = this.moduleRegistry.get(type);
                     const validator: HyperionValidator = module.getValidator();
-                    validator.validate(processCfg, (err: AsteriaError)=> {
-                        if (err) {
-                            logger.fatal(err.toString());
-                            throw ErrorUtil.errorToException(err);
-                        } else {
-                            const process: StreamProcess = module.buildStreamProcess(processCfg.config);
-                            this.PROCESSOR.addProcess(process);
-                        }
-                    });
+                    const err: AsteriaError = validator.validate(processCfg);
+                    if (err) {
+                        logger.fatal(err.toString());
+                        throw ErrorUtil.errorToException(err);
+                    } else {
+                        const process: StreamProcess = module.buildStreamProcess(processCfg.config);
+                        this.PROCESSOR.addProcess(process);
+                    }
                 } else {
                     const error: AsteriaError = new AsteriaError(
                         AsteriaErrorCode.INVALID_CONFIG,

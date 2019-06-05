@@ -5,9 +5,8 @@ class CsvToListValidator extends AbstractHyperionValidator_1.AbstractHyperionVal
     constructor() {
         super('com.asteria.hyperion.module.data.csvtolist::CsvToListValidator');
     }
-    validate(config, result) {
-        let error = null;
-        result(error);
+    validate(config) {
+        return null;
     }
 }
 exports.CsvToListValidator = CsvToListValidator;

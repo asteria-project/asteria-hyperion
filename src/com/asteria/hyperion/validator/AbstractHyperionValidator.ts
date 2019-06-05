@@ -20,5 +20,5 @@ export abstract class AbstractHyperionValidator extends AbstractAsteriaObject im
     /**
      * @inheritdoc
      */
-    abstract validate(config: HyperionProcessConfig, result: (err: AsteriaError)=> void): void;
+    abstract validate(config: HyperionProcessConfig): AsteriaError;
 }

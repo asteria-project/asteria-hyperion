@@ -52,16 +52,15 @@ class Hyperion extends asteria_gaia_1.AbstractAsteriaObject {
                 if (this.moduleRegistry.has(type)) {
                     const module = this.moduleRegistry.get(type);
                     const validator = module.getValidator();
-                    validator.validate(processCfg, (err) => {
-                        if (err) {
-                            logger.fatal(err.toString());
-                            throw asteria_gaia_1.ErrorUtil.errorToException(err);
-                        }
-                        else {
-                            const process = module.buildStreamProcess(processCfg.config);
-                            this.PROCESSOR.addProcess(process);
-                        }
-                    });
+                    const err = validator.validate(processCfg);
+                    if (err) {
+                        logger.fatal(err.toString());
+                        throw asteria_gaia_1.ErrorUtil.errorToException(err);
+                    }
+                    else {
+                        const process = module.buildStreamProcess(processCfg.config);
+                        this.PROCESSOR.addProcess(process);
+                    }
                 }
                 else {
                     const error = new asteria_gaia_1.AsteriaError(asteria_gaia_1.AsteriaErrorCode.INVALID_CONFIG, this.getClassName(), `module with reference "${type}" does not exist; use registerModule() to add a module to the hyperion processor`);

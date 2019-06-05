@@ -5,9 +5,8 @@ class LinesToListValidator extends AbstractHyperionValidator_1.AbstractHyperionV
     constructor() {
         super('com.asteria.hyperion.module.data.linestolist::LinesToListValidator');
     }
-    validate(config, result) {
-        let error = null;
-        result(error);
+    validate(config) {
+        return null;
     }
 }
 exports.LinesToListValidator = LinesToListValidator;

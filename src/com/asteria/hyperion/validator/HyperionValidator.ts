@@ -11,8 +11,9 @@ export interface HyperionValidator {
      * Validates the specified config object.
      * 
      * @param {HyperionProcessConfig} config the config object to validate.
-     * @param {Function} result the validation result callback; this function has an error parameter which is set to
-     *                          <code>null</code> whether the config object is not valid.
+     * 
+     * @returns {AsteriaError} an <code>AsteriaError</code>  whether the config object is not valid; <code>null</code>
+     *                         otherwise.
      */
-    validate(config: HyperionProcessConfig, result: (err: AsteriaError)=> void): void;
+    validate(config: HyperionProcessConfig): AsteriaError;
 }

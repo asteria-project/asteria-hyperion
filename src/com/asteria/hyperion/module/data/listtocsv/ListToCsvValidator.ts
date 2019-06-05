@@ -18,8 +18,7 @@ export class ListToCsvValidator extends AbstractHyperionValidator implements Hyp
     /**
      * @inheritdoc
      */
-    public validate(config: HyperionProcessConfig, result: (err: AsteriaError)=> void): void {
-        let error: AsteriaError = null;
-        result(error);
+    public validate(config: HyperionProcessConfig): AsteriaError {
+        return null;
     }
 }

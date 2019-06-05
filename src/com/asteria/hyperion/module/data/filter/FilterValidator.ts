@@ -19,7 +19,7 @@ export class FilterValidator extends AbstractHyperionValidator implements Hyperi
     /**
      * @inheritdoc
      */
-    public validate(config: HyperionProcessConfig, result: (err: AsteriaError)=> void): void {
+    public validate(config: HyperionProcessConfig): AsteriaError {
         let error: AsteriaError = null;
         const param: any = config.config;
         if (param === null || param === undefined) {
@@ -35,6 +35,6 @@ export class FilterValidator extends AbstractHyperionValidator implements Hyperi
                 '\'config\' paramater must be of the type of \'string\''
             );
         }
-        result(error);
+        return error;
     }
 }

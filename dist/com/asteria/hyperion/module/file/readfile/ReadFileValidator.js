@@ -7,7 +7,7 @@ class ReadFileValidator extends AbstractHyperionValidator_1.AbstractHyperionVali
     constructor() {
         super('com.asteria.hyperion.module.file.readfile::ReadFileValidator');
     }
-    validate(config, result) {
+    validate(config) {
         let error = null;
         const param = config.config;
         if (param === null || param === undefined) {
@@ -16,7 +16,7 @@ class ReadFileValidator extends AbstractHyperionValidator_1.AbstractHyperionVali
         else if (typeof param !== asteria_gaia_1.PrimitiveType.STRING) {
             error = asteria_ouranos_1.OuranosErrorBuilder.getInstance().build(asteria_gaia_1.AsteriaErrorCode.INVALID_PARAMETER, this.getClassName(), '\'config\' paramater must be of the type of \'string\'');
         }
-        result(error);
+        return error;
     }
 }
 exports.ReadFileValidator = ReadFileValidator;
