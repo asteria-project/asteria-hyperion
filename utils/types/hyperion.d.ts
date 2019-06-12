@@ -8,6 +8,13 @@
 declare module "asteria-hyperion" {
 
 import { AbstractAsteriaObject, StreamProcessConfig, AsteriaStream, AsteriaSession, AsteriaError, AsteriaContext, StreamProcess, AsteriaRegistry, AbstractAsteriaRegistry } from "asteria-gaia";
-import { CsvToListConfig, FilterConfig, LinesToListConfig, ListToCsvConfig, FileReaderConfig } from "asteria-cronos";
+import {
+    CsvPreviewConfig,
+    CsvToListConfig,
+    FilterConfig,
+    LinesToListConfig,
+    ListToCsvConfig,
+    FileReaderConfig
+} from "asteria-cronos";
 
 /*PLACEHOLDER*/}

@@ -32,5 +32,10 @@ export enum HyperionBaseProcessType {
     /**
      * Specifies the reference to the Hyperion "filtering" process.
      */
-    FILTER = 'filter'
+    FILTER = 'filter',
+
+    /**
+     * Specifies the reference to the Hyperion "CSV preview" process.
+     */
+    CSV_PREVIEW = 'csv-preview'
 }

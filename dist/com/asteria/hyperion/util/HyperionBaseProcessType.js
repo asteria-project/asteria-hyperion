@@ -8,4 +8,5 @@ var HyperionBaseProcessType;
     HyperionBaseProcessType["LINES_TO_LIST"] = "lines-to-list";
     HyperionBaseProcessType["LIST_TO_CSV"] = "list-to-csv";
     HyperionBaseProcessType["FILTER"] = "filter";
+    HyperionBaseProcessType["CSV_PREVIEW"] = "csv-preview";
 })(HyperionBaseProcessType = exports.HyperionBaseProcessType || (exports.HyperionBaseProcessType = {}));

@@ -1,4 +1,4 @@
-import { FileReaderConfig } from 'asteria-cronos';
+import { CsvPreviewConfig } from 'asteria-cronos';
 import { AsteriaError, AsteriaErrorCode, AsteriaLogger, AbstractAsteriaObject, PrimitiveType } from 'asteria-gaia';
 import { OuranosErrorBuilder, OuranosLogger } from 'asteria-ouranos';
 import { HyperionConfigAdapter } from '../../../config/HyperionConfigAdapter';
@@ -7,23 +7,23 @@ import { HyperionConfigAdapter } from '../../../config/HyperionConfigAdapter';
 const LOGGER: AsteriaLogger = OuranosLogger.getLogger();
 
 /**
- * The <code>FileReaderConfigAdapter</code> class allows to convert <code>read-file</code> config objects.
+ * The <code>CsvPreviewConfigAdapter</code> class allows to convert <code>csv-preview</code> config objects.
  */
-export class FileReaderConfigAdapter extends AbstractAsteriaObject implements HyperionConfigAdapter {
+export class CsvPreviewConfigAdapter extends AbstractAsteriaObject implements HyperionConfigAdapter {
 
     /**
-     * Create a new <code>FileReaderConfigAdapter</code> instance.
+     * Create a new <code>CsvPreviewConfigAdapter</code> instance.
      */
     constructor() {
-        super('com.asteria.hyperion.module.file.readfile::FileReaderConfigAdapter');
+        super('com.asteria.hyperion.module.file.csvpreview::CsvPreviewConfigAdapter');
     }
 
     /**
      * @inheritdoc
      */
-    public convert(config: any): FileReaderConfig {
+    public convert(config: any): CsvPreviewConfig {
         let error: AsteriaError = null;
-        let result: FileReaderConfig = null;
+        let result: CsvPreviewConfig = null;
         if (!config) {
             error = OuranosErrorBuilder.getInstance().build(
                 AsteriaErrorCode.MISSING_ASQL_QUERY,

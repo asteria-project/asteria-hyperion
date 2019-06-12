@@ -45,6 +45,11 @@ export { ListToCsvConfigAdapter } from './hyperion/module/data/listtocsv/ListToC
 export { ListToCsvModule } from './hyperion/module/data/listtocsv/ListToCsvModule';
 export { ListToCsvValidator } from './hyperion/module/data/listtocsv/ListToCsvValidator';
 
+//--> com/asteria/hyperion/module/file/csvpreview
+export { CsvPreviewConfigAdapter } from './hyperion/module/file/csvpreview/CsvPreviewConfigAdapter';
+export { CsvPreviewModule } from './hyperion/module/file/csvpreview/CsvPreviewModule';
+export { CsvPreviewValidator } from './hyperion/module/file/csvpreview/CsvPreviewValidator';
+
 //--> com/asteria/hyperion/module/file/readfile
 export { FileReaderConfigAdapter } from './hyperion/module/file/readfile/FileReaderConfigAdapter';
 export { ReadFileModule } from './hyperion/module/file/readfile/ReadFileModule';
