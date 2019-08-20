@@ -30,7 +30,6 @@ export class CsvPreviewConfigAdapter extends AbstractAsteriaObject implements Hy
                 this.getClassName(),
                 'file path is missing'
             );
-            LOGGER.error(error.toString());
         } else if (typeof config !== PrimitiveType.STRING) {
             error = OuranosErrorBuilder.getInstance().build(
                 AsteriaErrorCode.INVALID_ASQL_QUERY,
@@ -39,6 +38,9 @@ export class CsvPreviewConfigAdapter extends AbstractAsteriaObject implements Hy
             );
         } else {
             result = { path: config };
+        }
+        if (error) {
+            LOGGER.error(error.toString());
         }
         return result;
     }
