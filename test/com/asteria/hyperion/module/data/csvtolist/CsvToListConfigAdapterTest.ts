@@ -25,11 +25,13 @@ describe('CsvToListConfigAdapter class test', ()=> {
             expect(result.separator).to.be.undefined;
             expect(result.colsMapping).to.be.undefined;
         });
+
         it('should return a CsvToListConfig object initialized with the config separator', ()=> {
             const adapter: CsvToListConfigAdapter = new CsvToListConfigAdapter();
             const result: CsvToListConfig = adapter.convert(utils.CONFIG);
             expect(result.separator).to.equal(utils.CONFIG.separator);
         });
+        
         it('should return a CsvToListConfig object initialized with the config columns mapping', ()=> {
             const adapter: CsvToListConfigAdapter = new CsvToListConfigAdapter();
             const result: CsvToListConfig = adapter.convert(utils.CONFIG);

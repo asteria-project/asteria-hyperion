@@ -13,8 +13,8 @@ describe('CsvToListModule class test', ()=> {
 
     describe('#getClassName()', ()=> {
         it('should return the CsvToListModule fully qualified class name', ()=> {
-            const adapter: CsvToListModule = new CsvToListModule();
-            expect(adapter.getClassName()).to.equal(utils.CLASS_NAME);
+            const module: CsvToListModule = new CsvToListModule();
+            expect(module.getClassName()).to.equal(utils.CLASS_NAME);
         });
     });
     
