@@ -1,12 +1,12 @@
 import 'mocha';
 import { expect } from 'chai';
+import { StreamProcess } from 'asteria-gaia';
 
 // Class to test:
 import { AbstractHyperionModule } from '../../../../../../src/com/asteria/hyperion/core/module/AbstractHyperionModule';
 
 // Utilities:
 import * as utils from '../../../../../../utils/test-utils/classes/AbstractHyperionModuleImpl';
-import { StreamProcess } from 'asteria-gaia';
 
 // Test:
 describe('AbstractHyperionModule class test', ()=> {
