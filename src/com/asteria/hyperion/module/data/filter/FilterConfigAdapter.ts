@@ -16,7 +16,7 @@ export class FilterConfigAdapter extends AbstractAsteriaObject implements Hyperi
      * Create a new <code>FilterConfigAdapter</code> instance.
      */
     constructor() {
-        super('com.asteria.hyperion.module.data.filter:FilterConfigAdapter');
+        super('com.asteria.hyperion.module.data.filter::FilterConfigAdapter');
     }
 
     /**
@@ -31,7 +31,6 @@ export class FilterConfigAdapter extends AbstractAsteriaObject implements Hyperi
                 this.getClassName(),
                 'filter query is missing'
             );
-            LOGGER.error(error.toString());
         } else if (typeof config !== PrimitiveType.STRING) {
             error = OuranosErrorBuilder.getInstance().build(
                 AsteriaErrorCode.INVALID_ASQL_QUERY,
@@ -47,6 +46,9 @@ export class FilterConfigAdapter extends AbstractAsteriaObject implements Hyperi
                 condition: filterDef.condition,
                 filters: filterDef.filters
             };
+        }
+        if (error) {
+            LOGGER.error(error.toString());
         }
         return result;
     }
