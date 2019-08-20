@@ -3,7 +3,7 @@
  */
 
 // Utilities:
-export const CLASS_NAME: string = 'com.asteria.hyperion.module.data.listocsv::ListToCsvConfigAdapter';
+export const CLASS_NAME: string = 'com.asteria.hyperion.module.data.listtocsv::ListToCsvConfigAdapter';
 export const EMPTY_CONFIG: any = {};
 export const CONFIG: any = {
     separator: ';',

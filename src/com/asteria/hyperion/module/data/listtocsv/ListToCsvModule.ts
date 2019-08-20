@@ -19,7 +19,7 @@ export class ListToCsvModule extends AbstractHyperionModule implements HyperionM
             ListToCsvProcess,
             ListToCsvConfigAdapter,
             ListToCsvValidator,
-            'com.asteria.hyperion.module.data.listocsv::ListToCsvModule'
+            'com.asteria.hyperion.module.data.listtocsv::ListToCsvModule'
         );
     }
 }

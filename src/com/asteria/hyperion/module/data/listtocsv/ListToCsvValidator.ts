@@ -12,7 +12,7 @@ export class ListToCsvValidator extends AbstractHyperionValidator implements Hyp
      * Create a new <code>ListToCsvValidator</code> instance.
      */
     constructor() {
-        super('com.asteria.hyperion.module.data.listocsv::ListToCsvValidator');
+        super('com.asteria.hyperion.module.data.listtocsv::ListToCsvValidator');
     }
 
     /**

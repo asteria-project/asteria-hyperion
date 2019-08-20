@@ -11,7 +11,7 @@ export class ListToCsvConfigAdapter extends AbstractAsteriaObject implements Hyp
      * Create a new <code>ListToCsvConfigAdapter</code> instance.
      */
     constructor() {
-        super('com.asteria.hyperion.module.data.listocsv::ListToCsvConfigAdapter');
+        super('com.asteria.hyperion.module.data.listtocsv::ListToCsvConfigAdapter');
     }
 
     /**
