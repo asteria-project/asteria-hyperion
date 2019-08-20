@@ -1,7 +1,6 @@
 /*!
  * This module constains utilities used by the CsvToListValidator test suite.
  */
-
  
 import { HyperionBaseProcessType } from '../../../src/com/asteria/hyperion/util/HyperionBaseProcessType';
 import { HyperionProcessConfig } from '../../../src/com/asteria/hyperion/config/HyperionProcessConfig';
