@@ -21,19 +21,27 @@ export class CsvPreviewValidator extends AbstractHyperionValidator implements Hy
      */
     public validate(config: HyperionProcessConfig): AsteriaError {
         let error: AsteriaError = null;
-        const param: any = config.config;
-        if (param === null || param === undefined) {
+        if (!config) {
             error = OuranosErrorBuilder.getInstance().build(
-                AsteriaErrorCode.MISSING_PARAMETER,
+                AsteriaErrorCode.INVALID_CONFIG,
                 this.getClassName(),
-                '\'config\' paramater is missing'
+                '\'config\' must not be null'
             );
-        } else if (typeof param !== PrimitiveType.STRING) {
-            error = OuranosErrorBuilder.getInstance().build(
-                AsteriaErrorCode.INVALID_PARAMETER,
-                this.getClassName(),
-                '\'config\' paramater must be of the type of \'string\''
-            );
+        } else {
+            const param: any = config.config;
+            if (param === null || param === undefined) {
+                error = OuranosErrorBuilder.getInstance().build(
+                    AsteriaErrorCode.MISSING_PARAMETER,
+                    this.getClassName(),
+                    '\'config\' paramater is missing'
+                );
+            } else if (typeof param !== PrimitiveType.STRING) {
+                error = OuranosErrorBuilder.getInstance().build(
+                    AsteriaErrorCode.INVALID_PARAMETER,
+                    this.getClassName(),
+                    '\'config\' paramater must be of the type of \'string\''
+                );
+            }
         }
         return error;
     }
